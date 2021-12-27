@@ -21,15 +21,15 @@ set -e
 ./install-mathjax
 ./install-boost
 ./install-pandoc
-./install-quarto
 ./install-packages
-./install-sentry-cli
+#./install-sentry-cli
 ./install-npm-dependencies
 ./install-soci
 ./install-yaml-cpp
-./install-crashpad
+#./install-crashpad
 
 if [ -e install-overlay ]
 then
    ./install-overlay $1
 fi
+#./install-quarto

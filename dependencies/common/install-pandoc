@@ -21,9 +21,11 @@ source "$(dirname "${BASH_SOURCE[0]}")/../tools/rstudio-tools.sh"
 section "Installing Pandoc"
 
 # variables that control download + installation process
-PANDOC_VERSION="2.16.1"
+PANDOC_VERSION="2.14.0.3"
 PANDOC_SUBDIR="pandoc/${PANDOC_VERSION}"
-PANDOC_URL_BASE="https://s3.amazonaws.com/rstudio-buildtools/pandoc/${PANDOC_VERSION}"
+#PANDOC_URL_BASE="https://s3.amazonaws.com/rstudio-buildtools/pandoc/${PANDOC_VERSION}"
+# https://github.com/jgm/pandoc/releases/download/2.14.0.3/pandoc-2.14.0.3-linux-arm64.tar.gz
+PANDOC_URL_BASE="https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}"
 
 # see if we already have binaries
 if [ -d "${RSTUDIO_TOOLS_ROOT}/${PANDOC_SUBDIR}" ]; then
@@ -40,24 +42,24 @@ mkdir -p "${PANDOC_SUBDIR}"
 pushd "${PANDOC_SUBDIR}"
 
 # determine sub-directory based on platform
-PLATFORM="$(uname -s)-$(uname -m)"
+PLATFORM="$(uname)-$(getconf LONG_BIT)"
 case "${PLATFORM}" in
 
-"Darwin-x86_64" | "Darwin-arm64")
+"Darwin-64")
+  SUBDIR="macos"
   FILES=(
     "pandoc-${PANDOC_VERSION}-macOS.zip"
   )
   ;;
 
-"Linux-x86_64")
-  FILES=(
-    "pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz"
-  )
-  ;;
+# https://github.com/jgm/pandoc/releases/download/2.14.0.3/pandoc-2.14.0.3-linux-arm64.tar.gz
+#     "pandoc-${PANDOC_VERSION}-linux-md64.tar.gz"
 
-"Linux-aarch64")
+
+"Linux-64")
+  SUBDIR="linux"
   FILES=(
-    "pandoc-${PANDOC_VERSION}-linux-arm64.tar.gz"
+     "pandoc-${PANDOC_VERSION}-linux-arm64.tar.gz"
   )
   ;;
 
